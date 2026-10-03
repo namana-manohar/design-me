@@ -4,68 +4,82 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Design Me</title>
-<meta name="description" content="Furnish a room inside a fixed budget. Every pick shows why.">
+<meta name="description" content="Help people make expensive decisions they won't regret. Phase 0: a bedroom on a budget, every pick explained.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: brief on the left, the plan on the right; a top-down sketch of the room is the centrepiece. */
+/* Layout: one calm column that converges to a decision. Brief, then what I understood, then the decisions. */
 :root{
-  --bg:#F6F7F9; --panel:#FFFFFF; --ink:#1D232B; --muted:#626C78; --rule:#E1E5EA; --soft:#EEF1F4;
-  --timber:#A8693D; --timber-soft:#F3E6DA; --ok:#2E7D5B; --warn:#B4532A;
+  --bg:#F7F8F8; --panel:#FFFFFF; --ink:#1F2427; --muted:#646C72; --rule:#E2E5E7; --soft:#F0F2F2;
+  --accent:#3F6E5A; --accent-soft:#E4EEE9; --mid:#A8741F; --mid-soft:#F6EEDD; --low:#B04A2A; --low-soft:#F8E7E0;
   --f-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
   color-scheme:light;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--f-body)}
-.wrap{max-width:1180px;margin:0 auto;padding:24px 20px 56px}
-header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:22px}
-h1{margin:0;font:700 30px/1.1 var(--f-body);letter-spacing:-.02em}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15.5px/1.55 var(--f-body)}
+.wrap{max-width:780px;margin:0 auto;padding:28px 20px 64px}
+header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+h1{margin:0;font:700 28px/1.1 var(--f-body);letter-spacing:-.02em}
 header p{margin:4px 0 0;color:var(--muted)}
-header a{color:var(--ink);font-weight:500}
-.grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:20px;align-items:start}
-.panel{background:var(--panel);border:1px solid var(--rule);border-radius:14px;padding:18px}
-form{display:grid;gap:14px;position:sticky;top:16px}
-label{display:grid;gap:5px;font-weight:600;font-size:13px}
-label small{font-weight:400;color:var(--muted)}
-input,select,textarea{font:inherit;font-weight:400;padding:9px 10px;border:1px solid var(--rule);border-radius:9px;background:#fff;color:var(--ink);width:100%}
-textarea{min-height:76px;resize:vertical}
-input:focus,select:focus,textarea:focus{outline:2px solid var(--timber);outline-offset:0;border-color:var(--timber)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-fieldset{border:0;padding:0;margin:0;display:grid;gap:6px}
-legend{font-weight:600;font-size:13px;margin-bottom:6px}
-.owned{display:flex;flex-wrap:wrap;gap:6px}
-.owned label{display:inline-flex;align-items:center;gap:6px;font-weight:400;font-size:13px;border:1px solid var(--rule);border-radius:8px;padding:4px 8px;cursor:pointer}
-.owned input{width:auto;margin:0}
-.heard{font:400 12.5px var(--f-mono);color:var(--muted);margin:0}
-.heard b{color:var(--timber);font-weight:500}
-.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.stat{background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:12px 14px}
-.stat span{display:block;font:500 11.5px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-.stat b{font:700 24px/1.2 var(--f-body);font-variant-numeric:tabular-nums}
-.bar{height:6px;border-radius:3px;background:var(--soft);margin-top:8px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--timber)}
-.plan svg{width:100%;height:auto;display:block}
-.plan h2,.list h2{font-size:15px;margin:0 0 10px}
-.cap{font:400 12px var(--f-mono);color:var(--muted);margin:8px 0 0}
-.list{margin-top:14px}
-.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;padding:12px 0;border-top:1px solid var(--rule)}
-.item:first-of-type{border-top:0}
-.item h3{margin:0;font-size:15px}
-.item .price{font:500 14px var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
-.item .meta{font:400 12.5px var(--f-mono);color:var(--muted)}
-.item ul{margin:2px 0 0;padding-left:18px;color:var(--ink);font-size:13.5px}
-.tag{font:500 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;border-radius:5px;padding:1px 6px;margin-left:6px;vertical-align:2px}
-.tag.must{background:var(--timber-soft);color:var(--timber)} .tag.nice{background:var(--soft);color:var(--muted)} .tag.optional{background:var(--soft);color:var(--muted)}
-.skip{color:var(--muted);font-size:13.5px;padding:8px 0;border-top:1px dashed var(--rule)}
-.skip b{color:var(--ink);font-weight:600}
-.fail{border-left:3px solid var(--warn);padding:10px 14px;background:#FBEFEA;border-radius:8px}
+a{color:var(--ink)}
+h2{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:14px;padding:18px;margin-bottom:14px}
+textarea,input[type=text],input[type=number]{font:inherit;width:100%;padding:11px 12px;border:1px solid var(--rule);border-radius:10px;background:#fff;color:var(--ink)}
+textarea{min-height:96px;resize:vertical}
+textarea:focus,input:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.chip{font:500 13px var(--f-body);padding:6px 11px;border:1px solid var(--rule);border-radius:8px;background:#fff;cursor:pointer;color:var(--ink)}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:14px}
+.scale{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:13.5px;color:var(--muted)}
+.scale .chip{min-width:34px;text-align:center}
+.btn{font:600 15px var(--f-body);padding:10px 18px;border-radius:10px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--ink);border-color:var(--rule)}
+.btn.small{font-size:13px;padding:5px 11px;font-weight:500}
+.understood{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:14.5px}
+.understood li{display:flex;gap:8px}
+.understood .mk{font:600 14px var(--f-mono);width:16px;flex:none}
+.understood .q{color:var(--mid)}
+.understood .ok{color:var(--accent)}
+.clarify{margin-top:12px;padding:12px;border-radius:10px;background:var(--mid-soft)}
+.clarify label{display:block;font-weight:600;margin-bottom:6px}
+.budget{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px;margin-bottom:6px}
+.budget .line{display:flex;justify-content:space-between;gap:10px;font-variant-numeric:tabular-nums;flex-wrap:wrap}
+.budget b{font-size:20px}
+.bar{height:8px;background:var(--soft);border-radius:4px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .3s ease}
+.msg{font-size:13.5px;color:var(--muted);margin-top:6px}
+.decision{border-top:1px solid var(--rule);padding:16px 0}
+.decision:first-child{border-top:0;padding-top:4px}
+.dtop{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.dtop h3{margin:0;font-size:17px}
+.dtop h3 small{font-weight:500;color:var(--muted)}
+.price{font:500 15px var(--f-mono);font-variant-numeric:tabular-nums}
+.conf{display:inline-block;font:500 11.5px var(--f-mono);letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:5px;margin-left:6px;vertical-align:2px}
+.conf.high{background:var(--accent-soft);color:var(--accent)} .conf.moderate{background:var(--mid-soft);color:var(--mid)} .conf.low{background:var(--low-soft);color:var(--low)}
+.weak{margin:8px 0 0;padding:8px 10px;border-left:3px solid var(--low);background:var(--low-soft);border-radius:6px;font-size:13.5px}
+.sub{font:600 12px var(--f-body);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:10px 0 4px}
+.ev{list-style:none;margin:0;padding:0;display:grid;gap:3px;font-size:14px}
+.ev li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:4px}
+.ev .mk{font-family:var(--f-mono)}
+.ev small{color:var(--muted);font-family:var(--f-mono);font-size:11.5px;margin-left:4px;white-space:nowrap}
+.rej{list-style:none;margin:0;padding:0;display:grid;gap:3px;font-size:13.5px;color:var(--muted)}
+.rej b{color:var(--ink);font-weight:500}
+.actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.swap{margin-top:10px;padding:10px;border-radius:10px;background:var(--soft);display:grid;gap:6px}
+.swap .opt{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:14px}
+.reasons{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;font-size:13px;color:var(--muted)}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:14px}
+.list li{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.fail{border-left:3px solid var(--low);background:var(--low-soft);border-radius:8px;padding:12px 14px}
 .fail p{margin:4px 0}
-footer{margin-top:28px;color:var(--muted);font-size:13px}
-footer a{color:var(--ink)}
-@media (max-width:880px){.grid{grid-template-columns:1fr}form{position:static}.summary{grid-template-columns:1fr 1fr 1fr}}
-@media (max-width:440px){.wrap{padding-inline:16px}.summary{grid-template-columns:1fr}}
+.log{font:400 12.5px var(--f-mono);color:var(--muted)}
+footer{margin-top:30px;color:var(--muted);font-size:13px}
+[hidden]{display:none!important}
+@media (max-width:480px){.wrap{padding-inline:16px}}
 </style>
 </head>
 <body>
@@ -73,112 +87,166 @@ footer a{color:var(--ink)}
   <header>
     <div>
       <h1>Design Me</h1>
-      <p>Furnish a room inside a fixed budget. Every pick shows why.</p>
+      <p>Help people make expensive decisions they won't regret.</p>
     </div>
-    <a href="https://github.com/namana-manohar/design-me" target="_blank" rel="noopener">Source on GitHub ↗</a>
+    <a href="https://github.com/namana-manohar/design-me" target="_blank" rel="noopener">How it works ↗</a>
   </header>
 
-  <div class="grid">
-    <form class="panel" id="f" autocomplete="off">
-      <label>Room
-        <select id="kind"><option value="bedroom">Bedroom</option><option value="living">Living room</option><option value="study">Study</option></select>
-      </label>
-      <div class="row">
-        <label>Length <small>metres</small><input id="L" type="number" min="2" max="10" step="0.1" value="3.6"></label>
-        <label>Width <small>metres</small><input id="W" type="number" min="2" max="10" step="0.1" value="3"></label>
-      </div>
-      <label>Budget <small>rupees</small><input id="budget" type="number" min="0" step="1000" value="60000"></label>
-      <label>Style
-        <select id="style"><option>minimal</option><option selected>scandi</option><option>warm</option><option>classic</option><option>modern</option><option>industrial</option></select>
-      </label>
-      <label>Tell me about the room <small>a sentence or two</small>
-        <textarea id="brief">I work from home and I'm a light sleeper.</textarea>
-      </label>
-      <p class="heard" id="heard"></p>
-      <fieldset>
-        <legend>Already own</legend>
-        <div class="owned" id="owned"></div>
-      </fieldset>
-    </form>
+  <section class="panel" aria-labelledby="brief-h">
+    <h2 id="brief-h">Describe the room you're trying to set up</h2>
+    <textarea id="brief" aria-label="Describe the room"></textarea>
+    <div class="chips" id="examples"></div>
+    <div class="row">
+      <div class="scale" id="before-scale"><span>How sure are you what to buy?</span></div>
+      <button class="btn" id="go" type="button">Plan my room</button>
+    </div>
+  </section>
 
-    <main>
-      <div class="summary" id="summary"></div>
-      <section class="panel plan" aria-labelledby="plan-h">
-        <h2 id="plan-h">Room sketch</h2>
-        <div id="sketch"></div>
-        <p class="cap" id="sketch-cap">Top-down, to scale. Rough placement only.</p>
-      </section>
-      <section class="panel list" aria-labelledby="picks-h">
-        <h2 id="picks-h">The picks</h2>
-        <div id="picks"></div>
-        <div id="skipped"></div>
-      </section>
-    </main>
+  <section class="panel" id="understanding" hidden aria-labelledby="und-h">
+    <h2 id="und-h">Understanding your priorities</h2>
+    <ul class="understood" id="understood"></ul>
+    <div class="clarify" id="clarify" hidden></div>
+  </section>
+
+  <div id="result" hidden>
+    <div class="budget" id="budget"></div>
+    <section class="panel" aria-labelledby="dec-h"><h2 id="dec-h">The decisions</h2><div id="decisions"></div></section>
+    <section class="panel" id="extras"></section>
+    <section class="panel" aria-labelledby="after-h">
+      <h2 id="after-h">Before you go</h2>
+      <div class="scale" id="after-scale"><span>How sure are you about this plan?</span></div>
+      <p class="msg" id="delta"></p>
+      <label for="change" class="sub" style="display:block">What would you change first?</label>
+      <textarea id="change" style="min-height:60px"></textarea>
+      <p class="log" id="log"></p>
+    </section>
   </div>
 
-  <footer>Prototype by <a href="https://namana-manohar.vercel.app" target="_blank" rel="noopener">Namana Manohar</a>. Catalog prices and sizes are sample data.</footer>
+  <footer>Phase 0 prototype by <a href="https://namana-manohar.vercel.app" target="_blank" rel="noopener">Namana Manohar</a>. Catalog prices and sizes are sample data, not real listings.</footer>
 </div>
 
 <script type="module">
-import { ROOMS, planNeeds, solve, layout, inr } from "./engine.js";
+import { understand, clarify, decide, retrieve, plan, inr, BENCHMARK_001, HELD_OUT } from "./engine.js";
 const $ = (id) => document.getElementById(id);
-const COLORS = { bed: "#D9C2AE", wardrobe: "#C9B29A", sofa: "#BFD0DF", desk: "#C7D8C9", chair: "#D7E3D8", "side table": "#E6D5C3", bookshelf: "#D2C4B4", "tv unit": "#CCD5E0", "coffee table": "#E4D3C0", "dining table": "#E2D1BD", rug: "#F1E9DF" };
+const esc = (s) => String(s).replace(/[&<>"]/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[m]);
+const EXAMPLES = [
+  ["Student, ₹20k, 10 × 10 ft", BENCHMARK_001],
+  ["Back issues, ₹35k", HELD_OUT],
+  ["Tiny room, owns a bed", "Small 8 x 9 ft bedroom, ₹15,000. I already own a bed frame and mattress. I work from home. No space for a wardrobe."],
+];
+const REASONS = [["too_expensive", "Too expensive"], ["wrong_size", "Wrong size"], ["dont_like", "Don't like it"], ["ships_slow", "Ships slowly"], ["other", "Other"]];
+const S = { profile: null, locked: {}, removed: [], added: [], before: null, after: null, log: load(), swapOpen: null, pending: null };
 
-function renderOwned() {
-  const cats = [...new Set(Object.values(ROOMS).flat().map(([c]) => c))];
-  $("owned").innerHTML = cats.map((c) => `<label><input type="checkbox" value="${c}">${c}</label>`).join("");
+function load() { try { return JSON.parse(localStorage.getItem("dm-log") || "[]"); } catch { return []; } }
+function save() { try { localStorage.setItem("dm-log", JSON.stringify(S.log.slice(-200))); } catch {} }
+
+$("brief").value = BENCHMARK_001;
+$("examples").innerHTML = EXAMPLES.map(([l], i) => `<button class="chip" type="button" data-ex="${i}">${esc(l)}</button>`).join("");
+$("examples").addEventListener("click", (e) => { const b = e.target.closest("[data-ex]"); if (!b) return; $("brief").value = EXAMPLES[+b.dataset.ex][1]; start(); });
+function scale(el, key) {
+  el.insertAdjacentHTML("beforeend", [1, 2, 3, 4, 5].map((n) => `<button class="chip" type="button" data-n="${n}" aria-pressed="false">${n}</button>`).join(""));
+  el.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-n]"); if (!b) return;
+    S[key] = +b.dataset.n; el.querySelectorAll("[data-n]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    if (key === "after") showDelta();
+  });
 }
+scale($("before-scale"), "before"); scale($("after-scale"), "after");
+function showDelta() {
+  if (S.before && S.after) { const d = S.after - S.before; $("delta").textContent = `Confidence ${d > 0 ? "up" : d < 0 ? "down" : "unchanged"}: ${S.before} → ${S.after}.`; }
+}
+$("go").addEventListener("click", start);
 
-function esc(s) { return String(s).replace(/[&<>"]/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[m]); }
+function start() { S.locked = {}; S.removed = []; S.added = []; S.swapOpen = null; S.pending = null; S.profile = understand($("brief").value); render(); }
 
-function run() {
-  const room = { L: Math.max(2, +$("L").value || 0), W: Math.max(2, +$("W").value || 0) };
-  const budget = Math.max(0, +$("budget").value || 0), style = $("style").value;
-  const owned = [...document.querySelectorAll("#owned input:checked")].map((i) => i.value);
-  const plan = planNeeds($("kind").value, $("brief").value, owned);
-  $("heard").innerHTML = plan.heard.length ? "Heard: " + plan.heard.map((h) => `<b>“${esc(h)}”</b>`).join(", ") : "Heard nothing that changes the list. Try “work from home”, “reading”, “guests”, “movies”.";
-  const r = solve({ room, budget, style, needs: plan.needs });
+function render() {
+  const p = S.profile;
+  $("understanding").hidden = false;
+  const items = [];
+  const ok = (t) => items.push(`<li><span class="mk ok">✓</span><span>${t}</span></li>`);
+  const q = (t) => items.push(`<li><span class="mk q">?</span><span>${t}</span></li>`);
+  if (p.budget.value) ok(`Budget ${inr(p.budget.value)}`);
+  if (p.room.L) (p.room.conf < 0.9 ? q : ok)(`${p.room.L} × ${p.room.W} ${p.room.unit} room${p.room.conf < 0.9 ? " (feet assumed)" : ""}`);
+  if (p.owned.length) ok(`Already own: ${p.owned.join(", ")}`);
+  if (p.must.length) ok(`Must have: ${p.must.join(", ")}`);
+  if (p.cannot.length) ok(`Not buying: ${p.cannot.join(", ")}`);
+  if (p.back) ok("Back trouble: chair needs lumbar support");
+  if (p.dislike.length) ok(`No ${p.dislike.join(" or ")} finishes`);
+  if (p.style.tokens.length) ok(`Style: ${p.style.tokens.join(", ")}`);
+  for (const n of p.notes) if (n.q && !/feet/.test(n.text)) q(esc(n.text));
+  $("understood").innerHTML = items.join("") || "<li>I couldn't pick anything out yet.</li>";
 
-  if (!r.ok) {
-    $("summary").innerHTML = "";
-    $("sketch").innerHTML = "";
-    $("picks").innerHTML = `<div class="fail"><b>This room can't be done as asked.</b>${r.problems.map((p) => `<p>${esc(p)}</p>`).join("")}</div>`;
-    $("skipped").innerHTML = "";
+  const c = clarify(p);
+  if (c) {
+    $("clarify").hidden = false;
+    $("clarify").innerHTML = `<label for="ans">${c.question}</label><div class="row" style="margin-top:0"><input id="ans" type="text" style="flex:1;min-width:0"><button class="btn small" id="ans-go" type="button">Continue</button></div>`;
+    $("ans-go").onclick = () => { const v = $("ans").value.trim(); if (!v) return; $("brief").value += c.field === "budget" ? ` Budget ₹${v.replace(/^₹/, "")}.` : ` Room ${v}.`; start(); };
+    $("result").hidden = true;
     return;
   }
-  const pct = Math.round((r.spent / budget) * 100);
-  $("summary").innerHTML = `
-    <div class="stat"><span>Spent</span><b>${inr(r.spent)}</b><div class="bar"><i style="width:${Math.min(100, pct)}%"></i></div></div>
-    <div class="stat"><span>Left over</span><b>${inr(r.left)}</b></div>
-    <div class="stat"><span>Floor used</span><b>${Math.round(r.floorShare * 100)}%</b><div class="bar"><i style="width:${Math.round(r.floorShare * 200)}%"></i></div></div>`;
+  $("clarify").hidden = true;
+  $("result").hidden = false;
+  const r = decide(p, { locked: S.locked, removed: S.removed, added: S.added });
+  if (!r.ok) {
+    $("budget").innerHTML = "";
+    $("decisions").innerHTML = `<div class="fail"><b>This room can't be done as asked.</b>${r.problems.map((x) => `<p>${esc(x)}</p>`).join("")}</div>`;
+    $("extras").innerHTML = "";
+    return;
+  }
+  const pct = Math.min(100, (r.spent / r.budget) * 100);
+  const msg = r.left === 0 ? "Exactly on budget." : `${inr(r.left)} left.` + (r.optional.find((o) => o.affordable) ? ` Enough for the ${r.optional.find((o) => o.affordable).category} if you want it.` : r.optional.length ? ` Optional extras would go over: ${r.optional.map((o) => `${o.category} from ${inr(o.price)}`).join(", ")}.` : "");
+  $("budget").innerHTML = `<div class="line"><span><b>${inr(r.spent)}</b> of ${inr(r.budget)}</span><span class="price">${r.decisions.length} items</span></div><div class="bar"><i style="width:${pct}%"></i></div><div class="msg">${esc(msg)}</div>`;
 
-  const lay = layout(r.picks, room), pad = 24, scale = 1;
-  const vb = `${-pad} ${-pad} ${lay.L + pad * 2} ${lay.W + pad * 2}`;
-  const box = (q, fill) => `<g><rect x="${q.x}" y="${q.y}" width="${q.w}" height="${q.d}" rx="4" fill="${fill}" stroke="#1D232B" stroke-opacity=".35" stroke-width="1.2"/>
-      <text x="${q.x + q.w / 2}" y="${q.y + q.d / 2}" text-anchor="middle" dominant-baseline="middle" font-family="Instrument Sans, sans-serif" font-size="${Math.max(9, Math.min(13, q.w / 9))}" fill="#1D232B">${esc(q.category)}</text></g>`;
-  $("sketch").innerHTML = `<svg viewBox="${vb}" role="img" aria-label="Top-down sketch of the room">
-      <rect x="0" y="0" width="${lay.L}" height="${lay.W}" fill="#FBFBFC" stroke="#1D232B" stroke-width="4"/>
-      ${lay.under.map((q) => box(q, COLORS.rug)).join("")}
-      ${lay.rects.map((q) => box(q, COLORS[q.category] || "#E3E7EC")).join("")}
-      <text x="${lay.L / 2}" y="${-8}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#626C78">${room.L} m</text>
-      <text x="${-10}" y="${lay.W / 2}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#626C78" transform="rotate(-90 ${-10} ${lay.W / 2})">${room.W} m</text>
-    </svg>`;
-  $("sketch-cap").textContent = "Top-down, to scale. Rough placement only." + (lay.overflow.length ? ` Not drawn: ${lay.overflow.join(", ")}.` : "");
+  $("decisions").innerHTML = r.decisions.map((d) => {
+    const it = d.chosen, open = S.swapOpen === d.category;
+    const ev = d.evidence.map((e) => `<li><span class="mk">${e.type === "fact" ? "✓" : "~"}</span><span>${esc(e.text)}<small>(${e.type}${e.conf != null && e.load ? `, ${e.conf >= 0.85 ? "high" : e.conf >= 0.6 ? "moderate" : "low"}` : ""})</small></span></li>`).join("");
+    const rej = d.rejections.slice(0, 3).map((x) => `<li><b>${esc(x.name)}</b>: ${esc(x.reason)}</li>`).join("");
+    let swap = "";
+    if (open) {
+      const pool = retrieve({ category: d.category, necessity: d.necessity }, p).candidates.filter((c) => c.it.id !== it.id);
+      swap = `<div class="swap">${pool.map((c) => `<div class="opt"><span>${esc(c.it.name)} · <span class="price">${inr(c.it.price)}</span></span><button class="btn small ghost" data-pick="${d.category}|${c.it.id}">Choose</button></div>`).join("") || "Nothing else in the catalog passes your constraints."}</div>`;
+    }
+    const pending = S.pending && S.pending.category === d.category
+      ? `<div class="reasons">Why ${S.pending.kind === "remove" ? "remove it" : "not this one"}? ${REASONS.map(([k, l]) => `<button class="chip" data-reason="${k}">${l}</button>`).join("")}</div>` : "";
+    return `<div class="decision">
+      <div class="dtop"><h3>${esc(cap(d.category))} <small>· ${esc(it.name)}</small><span class="conf ${d.confidence.label}">${d.confidence.label}</span></h3><span class="price">${inr(it.price)}</span></div>
+      ${d.confidence.label !== "high" ? `<div class="weak">Weakest link: ${esc(d.confidence.weakest)}</div>` : ""}
+      <div class="sub">Why this</div><ul class="ev">${ev}</ul>
+      <div class="sub">Not chosen</div><ul class="rej">${rej}</ul>
+      <div class="actions"><button class="btn small ghost" data-swap="${d.category}">${open ? "Close" : "Swap"}</button><button class="btn small ghost" data-remove="${d.category}">Remove</button></div>
+      ${swap}${pending}
+    </div>`;
+  }).join("");
 
-  $("picks").innerHTML = r.picks.map((p) => `
-    <div class="item">
-      <div><h3>${esc(p.name)}<span class="tag ${p.need}">${p.need}</span></h3>
-        <div class="meta">${p.category}${p.w ? ` · ${p.w} × ${p.d} × ${p.h} cm` : ""}</div>
-        <ul>${p.why.map((w) => `<li>${esc(w)}</li>`).join("")}</ul></div>
-      <div class="price">${inr(p.price)}</div>
-    </div>`).join("");
-  $("skipped").innerHTML = r.skipped.map((s) => `<div class="skip"><b>Skipped ${esc(s.category)}</b> (${s.need}). ${esc(s.why)}.</div>`).join("");
+  const extras = [];
+  if (r.skipped.length) extras.push(`<div class="sub">Left out</div><ul class="list">${r.skipped.map((s) => `<li><span><b>${esc(cap(s.category))}</b>: ${esc(s.why)}</span></li>`).join("")}</ul>`);
+  if (r.optional.length) extras.push(`<div class="sub">Could add</div><ul class="list">${r.optional.map((o) => `<li><span><b>${esc(cap(o.category))}</b>${o.price ? ` from ${inr(o.price)}` : ""}: ${esc(o.why)}</span><button class="btn small ghost" data-add="${o.category}">Add</button></li>`).join("")}</ul>`);
+  if (r.plan.excluded.length) extras.push(`<div class="sub">Not buying</div><ul class="list">${r.plan.excluded.map((x) => `<li><span><b>${esc(cap(x.category))}</b>: ${esc(x.why)}${S.removed.includes(x.category) ? "" : ""}</span>${S.removed.includes(x.category) ? `<button class="btn small ghost" data-restore="${x.category}">Bring back</button>` : ""}</li>`).join("")}</ul>`);
+  $("extras").innerHTML = extras.join("");
+  $("extras").hidden = !extras.length;
+  $("log").textContent = S.log.length ? `${S.log.length} rejection${S.log.length > 1 ? "s" : ""} with reasons saved on this device (Law 4: every rejection is data).` : "";
 }
 
-renderOwned();
-$("f").addEventListener("input", run);
-$("f").addEventListener("submit", (e) => e.preventDefault());
-run();
+document.addEventListener("click", (e) => {
+  const t = e.target.closest("button"); if (!t) return;
+  const d = t.dataset;
+  if (d.swap) { S.swapOpen = S.swapOpen === d.swap ? null : d.swap; S.pending = null; render(); }
+  else if (d.pick) { const [category, id] = d.pick.split("|"); S.pending = { kind: "swap", category, id }; render(); }
+  else if (d.remove) { S.pending = { kind: "remove", category: d.remove }; render(); }
+  else if (d.reason) {
+    const r = decide(S.profile, { locked: S.locked, removed: S.removed, added: S.added });
+    const cur = r.ok && r.decisions.find((x) => x.category === S.pending.category);
+    S.log.push({ at: new Date().toISOString(), category: S.pending.category, rejected: cur ? cur.chosen.id : null, action: S.pending.kind, reason: d.reason });
+    save();
+    if (S.pending.kind === "swap") S.locked[S.pending.category] = S.pending.id;
+    else { S.removed.push(S.pending.category); delete S.locked[S.pending.category]; }
+    S.pending = null; S.swapOpen = null; render();
+  }
+  else if (d.add) { S.added.push(d.add); render(); }
+  else if (d.restore) { S.removed = S.removed.filter((c) => c !== d.restore); render(); }
+});
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+start();
 </script>
 </body>
 </html>
