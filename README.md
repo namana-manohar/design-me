@@ -8,6 +8,10 @@ Design Me is a decision engine that reduces uncertainty before someone spends mo
 
 Describe the room ("Student, ₹20,000, 10 × 10 ft, I already own a mattress, need a study table, chair, lighting and storage, no space for a wardrobe, minimal and calm"). It shows what it understood, asks one question if something critical is missing, then gives a decision for each item: what it picked, why, how sure it is about each claim, and which alternatives it rejected and why.
 
+## Design docs
+
+The full Phase 0 design, written before any code: [overview and build order](docs/00-overview.md), [architecture](docs/01-architecture.md), [engine](docs/02-engine.md), [storage and data model](docs/03-storage.md), [UI](docs/04-ui-ux.md), [catalog](docs/05-catalog.md), [Benchmark 001 and the validation protocol](docs/06-benchmark.md). This prototype follows them; where it simplifies (rules instead of LLM calls, a sample catalog), the README says so.
+
 ## The five laws
 
 Every feature is checked against these.
