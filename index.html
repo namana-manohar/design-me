@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Me</title>
+<meta name="description" content="Furnish a room inside a fixed budget. Every pick shows why.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: brief on the left, the plan on the right; a top-down sketch of the room is the centrepiece. */
+:root{
+  --bg:#F6F7F9; --panel:#FFFFFF; --ink:#1D232B; --muted:#626C78; --rule:#E1E5EA; --soft:#EEF1F4;
+  --timber:#A8693D; --timber-soft:#F3E6DA; --ok:#2E7D5B; --warn:#B4532A;
+  --f-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--f-body)}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 20px 56px}
+header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+h1{margin:0;font:700 30px/1.1 var(--f-body);letter-spacing:-.02em}
+header p{margin:4px 0 0;color:var(--muted)}
+header a{color:var(--ink);font-weight:500}
+.grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:20px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:14px;padding:18px}
+form{display:grid;gap:14px;position:sticky;top:16px}
+label{display:grid;gap:5px;font-weight:600;font-size:13px}
+label small{font-weight:400;color:var(--muted)}
+input,select,textarea{font:inherit;font-weight:400;padding:9px 10px;border:1px solid var(--rule);border-radius:9px;background:#fff;color:var(--ink);width:100%}
+textarea{min-height:76px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--timber);outline-offset:0;border-color:var(--timber)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+fieldset{border:0;padding:0;margin:0;display:grid;gap:6px}
+legend{font-weight:600;font-size:13px;margin-bottom:6px}
+.owned{display:flex;flex-wrap:wrap;gap:6px}
+.owned label{display:inline-flex;align-items:center;gap:6px;font-weight:400;font-size:13px;border:1px solid var(--rule);border-radius:8px;padding:4px 8px;cursor:pointer}
+.owned input{width:auto;margin:0}
+.heard{font:400 12.5px var(--f-mono);color:var(--muted);margin:0}
+.heard b{color:var(--timber);font-weight:500}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:12px 14px}
+.stat span{display:block;font:500 11.5px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.stat b{font:700 24px/1.2 var(--f-body);font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:3px;background:var(--soft);margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--timber)}
+.plan svg{width:100%;height:auto;display:block}
+.plan h2,.list h2{font-size:15px;margin:0 0 10px}
+.cap{font:400 12px var(--f-mono);color:var(--muted);margin:8px 0 0}
+.list{margin-top:14px}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;padding:12px 0;border-top:1px solid var(--rule)}
+.item:first-of-type{border-top:0}
+.item h3{margin:0;font-size:15px}
+.item .price{font:500 14px var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
+.item .meta{font:400 12.5px var(--f-mono);color:var(--muted)}
+.item ul{margin:2px 0 0;padding-left:18px;color:var(--ink);font-size:13.5px}
+.tag{font:500 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;border-radius:5px;padding:1px 6px;margin-left:6px;vertical-align:2px}
+.tag.must{background:var(--timber-soft);color:var(--timber)} .tag.nice{background:var(--soft);color:var(--muted)} .tag.optional{background:var(--soft);color:var(--muted)}
+.skip{color:var(--muted);font-size:13.5px;padding:8px 0;border-top:1px dashed var(--rule)}
+.skip b{color:var(--ink);font-weight:600}
+.fail{border-left:3px solid var(--warn);padding:10px 14px;background:#FBEFEA;border-radius:8px}
+.fail p{margin:4px 0}
+footer{margin-top:28px;color:var(--muted);font-size:13px}
+footer a{color:var(--ink)}
+@media (max-width:880px){.grid{grid-template-columns:1fr}form{position:static}.summary{grid-template-columns:1fr 1fr 1fr}}
+@media (max-width:440px){.wrap{padding-inline:16px}.summary{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Design Me</h1>
+      <p>Furnish a room inside a fixed budget. Every pick shows why.</p>
+    </div>
+    <a href="https://github.com/namana-manohar/design-me" target="_blank" rel="noopener">Source on GitHub ↗</a>
+  </header>
+
+  <div class="grid">
+    <form class="panel" id="f" autocomplete="off">
+      <label>Room
+        <select id="kind"><option value="bedroom">Bedroom</option><option value="living">Living room</option><option value="study">Study</option></select>
+      </label>
+      <div class="row">
+        <label>Length <small>metres</small><input id="L" type="number" min="2" max="10" step="0.1" value="3.6"></label>
+        <label>Width <small>metres</small><input id="W" type="number" min="2" max="10" step="0.1" value="3"></label>
+      </div>
+      <label>Budget <small>rupees</small><input id="budget" type="number" min="0" step="1000" value="60000"></label>
+      <label>Style
+        <select id="style"><option>minimal</option><option selected>scandi</option><option>warm</option><option>classic</option><option>modern</option><option>industrial</option></select>
+      </label>
+      <label>Tell me about the room <small>a sentence or two</small>
+        <textarea id="brief">I work from home and I'm a light sleeper.</textarea>
+      </label>
+      <p class="heard" id="heard"></p>
+      <fieldset>
+        <legend>Already own</legend>
+        <div class="owned" id="owned"></div>
+      </fieldset>
+    </form>
+
+    <main>
+      <div class="summary" id="summary"></div>
+      <section class="panel plan" aria-labelledby="plan-h">
+        <h2 id="plan-h">Room sketch</h2>
+        <div id="sketch"></div>
+        <p class="cap" id="sketch-cap">Top-down, to scale. Rough placement only.</p>
+      </section>
+      <section class="panel list" aria-labelledby="picks-h">
+        <h2 id="picks-h">The picks</h2>
+        <div id="picks"></div>
+        <div id="skipped"></div>
+      </section>
+    </main>
+  </div>
+
+  <footer>Prototype by <a href="https://namana-manohar.vercel.app" target="_blank" rel="noopener">Namana Manohar</a>. Catalog prices and sizes are sample data.</footer>
+</div>
+
+<script type="module">
+import { ROOMS, planNeeds, solve, layout, inr } from "./engine.js";
+const $ = (id) => document.getElementById(id);
+const COLORS = { bed: "#D9C2AE", wardrobe: "#C9B29A", sofa: "#BFD0DF", desk: "#C7D8C9", chair: "#D7E3D8", "side table": "#E6D5C3", bookshelf: "#D2C4B4", "tv unit": "#CCD5E0", "coffee table": "#E4D3C0", "dining table": "#E2D1BD", rug: "#F1E9DF" };
+
+function renderOwned() {
+  const cats = [...new Set(Object.values(ROOMS).flat().map(([c]) => c))];
+  $("owned").innerHTML = cats.map((c) => `<label><input type="checkbox" value="${c}">${c}</label>`).join("");
+}
+
+function esc(s) { return String(s).replace(/[&<>"]/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[m]); }
+
+function run() {
+  const room = { L: Math.max(2, +$("L").value || 0), W: Math.max(2, +$("W").value || 0) };
+  const budget = Math.max(0, +$("budget").value || 0), style = $("style").value;
+  const owned = [...document.querySelectorAll("#owned input:checked")].map((i) => i.value);
+  const plan = planNeeds($("kind").value, $("brief").value, owned);
+  $("heard").innerHTML = plan.heard.length ? "Heard: " + plan.heard.map((h) => `<b>“${esc(h)}”</b>`).join(", ") : "Heard nothing that changes the list. Try “work from home”, “reading”, “guests”, “movies”.";
+  const r = solve({ room, budget, style, needs: plan.needs });
+
+  if (!r.ok) {
+    $("summary").innerHTML = "";
+    $("sketch").innerHTML = "";
+    $("picks").innerHTML = `<div class="fail"><b>This room can't be done as asked.</b>${r.problems.map((p) => `<p>${esc(p)}</p>`).join("")}</div>`;
+    $("skipped").innerHTML = "";
+    return;
+  }
+  const pct = Math.round((r.spent / budget) * 100);
+  $("summary").innerHTML = `
+    <div class="stat"><span>Spent</span><b>${inr(r.spent)}</b><div class="bar"><i style="width:${Math.min(100, pct)}%"></i></div></div>
+    <div class="stat"><span>Left over</span><b>${inr(r.left)}</b></div>
+    <div class="stat"><span>Floor used</span><b>${Math.round(r.floorShare * 100)}%</b><div class="bar"><i style="width:${Math.round(r.floorShare * 200)}%"></i></div></div>`;
+
+  const lay = layout(r.picks, room), pad = 24, scale = 1;
+  const vb = `${-pad} ${-pad} ${lay.L + pad * 2} ${lay.W + pad * 2}`;
+  const box = (q, fill) => `<g><rect x="${q.x}" y="${q.y}" width="${q.w}" height="${q.d}" rx="4" fill="${fill}" stroke="#1D232B" stroke-opacity=".35" stroke-width="1.2"/>
+      <text x="${q.x + q.w / 2}" y="${q.y + q.d / 2}" text-anchor="middle" dominant-baseline="middle" font-family="Instrument Sans, sans-serif" font-size="${Math.max(9, Math.min(13, q.w / 9))}" fill="#1D232B">${esc(q.category)}</text></g>`;
+  $("sketch").innerHTML = `<svg viewBox="${vb}" role="img" aria-label="Top-down sketch of the room">
+      <rect x="0" y="0" width="${lay.L}" height="${lay.W}" fill="#FBFBFC" stroke="#1D232B" stroke-width="4"/>
+      ${lay.under.map((q) => box(q, COLORS.rug)).join("")}
+      ${lay.rects.map((q) => box(q, COLORS[q.category] || "#E3E7EC")).join("")}
+      <text x="${lay.L / 2}" y="${-8}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#626C78">${room.L} m</text>
+      <text x="${-10}" y="${lay.W / 2}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#626C78" transform="rotate(-90 ${-10} ${lay.W / 2})">${room.W} m</text>
+    </svg>`;
+  $("sketch-cap").textContent = "Top-down, to scale. Rough placement only." + (lay.overflow.length ? ` Not drawn: ${lay.overflow.join(", ")}.` : "");
+
+  $("picks").innerHTML = r.picks.map((p) => `
+    <div class="item">
+      <div><h3>${esc(p.name)}<span class="tag ${p.need}">${p.need}</span></h3>
+        <div class="meta">${p.category}${p.w ? ` · ${p.w} × ${p.d} × ${p.h} cm` : ""}</div>
+        <ul>${p.why.map((w) => `<li>${esc(w)}</li>`).join("")}</ul></div>
+      <div class="price">${inr(p.price)}</div>
+    </div>`).join("");
+  $("skipped").innerHTML = r.skipped.map((s) => `<div class="skip"><b>Skipped ${esc(s.category)}</b> (${s.need}). ${esc(s.why)}.</div>`).join("");
+}
+
+renderOwned();
+$("f").addEventListener("input", run);
+$("f").addEventListener("submit", (e) => e.preventDefault());
+run();
+</script>
+</body>
+</html>
